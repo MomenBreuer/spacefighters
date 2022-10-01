@@ -27,12 +27,12 @@ running = True
 while running:
     # background color
     screen.fill((0, 0, 0))
+    # because I love dark mode, IDK how some people can live and look at bright screens everyday
+    # I mean, just read the advantages of it here https://blog.weekdone.com/why-you-should-switch-on-dark-mode/
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
-    # because I love dark mode, IDK how some people can live and look at bright screens everyday
-    # I mean, just read the advantages of it here https://blog.weekdone.com/why-you-should-switch-on-dark-mode/
     player()
     pygame.display.update()
 
