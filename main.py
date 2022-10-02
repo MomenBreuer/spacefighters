@@ -1,6 +1,7 @@
 import pygame
 import random
 
+
 # def
 def player(x, y):
     screen.blit(fighter, (x, y))
@@ -34,7 +35,8 @@ fighterX_change = 0
 enemy = pygame.image.load('enemy.png')
 enemyX = random.randint(0, 800)
 enemyY = random.randint(50, 150)
-enemyX_change = 0
+enemyX_change = 0.2
+enemyY_change = 40
 
 # checking if the game is running
 running = True
@@ -60,16 +62,27 @@ while running:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                 fighterX_change = 0
 
+
+    # boundaries
     fighterX += fighterX_change
     if fighterX <= 0:
         fighterX = 0
     elif fighterX >= 736:
         fighterX = 736
+
+    enemyX += enemyX_change
+    if enemyX <= 0:
+        enemyX_change = 0.2
+        enemyY += enemyY_change
+    elif enemyX >= 736:
+        enemyX_change = -0.2
+        enemyY += enemyY_change
+
     player(fighterX, fighterY)
     invader(enemyX, enemyY)
     pygame.display.update()
 
 ####################################################################
-# Icon made by IYIKON [https://freeicons.io/profile/5876] from www.freeicons.io
+# game icon made by IYIKON [https://freeicons.io/profile/5876] from www.freeicons.io
 # fighter design is made by ColourCreatype [https://freeicons.io/profile/5790] from www.freeicons.io
 # enemy design is made by www.wishforge.games [https://freeicons.io/profile/2257] from www.freeicons.io
