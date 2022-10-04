@@ -11,6 +11,12 @@ def invader(x, y):
     screen.blit(enemy, (x, y))
 
 
+def fire_bullet(x, y):
+    global bullet_state
+    bullet_state = "fire"
+    screen.blit(bullet, (x + 16, y + 10))
+
+
 # init pygame
 pygame.init()
 
@@ -38,6 +44,14 @@ enemyY = random.randint(50, 150)
 enemyX_change = 0.2
 enemyY_change = 40
 
+# bullet
+bullet = pygame.image.load('bullet.png')
+bulletX = 0
+bulletY = 480
+bulletX_change = 0
+bulletY_change = 10
+bullet_state = "ready"
+
 # checking if the game is running
 running = True
 while running:
@@ -52,16 +66,18 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-        # if key is pressed check whether its right or left
+        # keys
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
                 fighterX_change = -0.3
             if event.key == pygame.K_RIGHT:
                 fighterX_change = 0.3
+            if event.key == pygame.K_SPACE:
+                fire_bullet(fighterX, bulletY)
+
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                 fighterX_change = 0
-
 
     # boundaries
     fighterX += fighterX_change
@@ -70,6 +86,7 @@ while running:
     elif fighterX >= 736:
         fighterX = 736
 
+    # enemy movement
     enemyX += enemyX_change
     if enemyX <= 0:
         enemyX_change = 0.2
@@ -81,6 +98,11 @@ while running:
     player(fighterX, fighterY)
     invader(enemyX, enemyY)
     pygame.display.update()
+
+    # bullet movement
+    if bullet_state is "fire":
+        fire_bullet(fighterX, bulletY)
+        bulletY -= bulletY_change
 
 ####################################################################
 # game icon made by IYIKON [https://freeicons.io/profile/5876] from www.freeicons.io
