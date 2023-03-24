@@ -47,7 +47,7 @@ enemyY_change = 40
 # bullet
 bullet = pygame.image.load('bullet.png')
 bulletX = 0
-bulletY = 480
+bulletY = 450
 bulletX_change = 0
 bulletY_change = 10
 bullet_state = "ready"
@@ -73,6 +73,7 @@ while running:
             if event.key == pygame.K_RIGHT:
                 fighterX_change = 0.3
             if event.key == pygame.K_SPACE:
+                print("space pressed")
                 fire_bullet(fighterX, bulletY)
 
         if event.type == pygame.KEYUP:
@@ -97,14 +98,18 @@ while running:
 
     player(fighterX, fighterY)
     invader(enemyX, enemyY)
-    pygame.display.update()
 
     # bullet movement
-    if bullet_state is "fire":
-        fire_bullet(fighterX, bulletY)
+    if bullet_state == "fire":
+        screen.blit(bullet, (fighterX + 16, bulletY))
         bulletY -= bulletY_change
+        if bulletY <= 0:
+            bulletY = 480
+            bullet_state = "ready"
 
+    pygame.display.update()
 ####################################################################
 # game icon made by IYIKON [https://freeicons.io/profile/5876] from www.freeicons.io
 # fighter design is made by ColourCreatype [https://freeicons.io/profile/5790] from www.freeicons.io
 # enemy design is made by www.wishforge.games [https://freeicons.io/profile/2257] from www.freeicons.io
+
