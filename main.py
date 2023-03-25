@@ -1,4 +1,5 @@
 import pygame
+import math
 import random
 
 
@@ -39,7 +40,7 @@ fighterX_change = 0
 
 # enemy
 enemy = pygame.image.load('enemy.png')
-enemyX = random.randint(0, 800)
+enemyX = random.randint(0, 736)
 enemyY = random.randint(50, 150)
 enemyX_change = 0.2
 enemyY_change = 40
@@ -52,16 +53,43 @@ bulletX_change = 0
 bulletY_change = 10
 bullet_state = "ready"
 
+
+# creating font object
+font = pygame.font.Font(None, 32)
+
+# setting initial score to 0
+score = 0
+
+# game over font
+game_over_font = pygame.font.Font(None, 64)
+
+# game over loop flag
+game_over = False
+
 # checking if the game is running
 running = True
 while running:
+
     # background color
     screen.fill((0, 0, 0))
+
     # background image
     screen.blit(background, (0, 0))
-
     # because I love dark mode, IDK how some people can live and look at bright screens everyday
     # I mean, just read the advantages of it here https://blog.weekdone.com/why-you-should-switch-on-dark-mode/
+
+    # render score text onto a surface
+    score_text = font.render("Score: " + str(score), True, (255, 255, 255))
+
+    # blit score text onto screen
+    screen.blit(score_text, (650, 10))
+    # check for collision between player and enemy
+    distance = math.sqrt((fighterX - enemyX)**2 + (fighterY - enemyY)**2)
+    if distance < 27:
+        is_collision = True
+        break  # exit the game loop if there is a collision
+
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -107,7 +135,43 @@ while running:
             bulletY = 480
             bullet_state = "ready"
 
+        # check for collision with enemy
+        distance = math.sqrt((fighterX - enemyX) ** 2 + (bulletY - enemyY) ** 2)
+
+        if distance < 27:
+            bulletY = 480
+            bullet_state = "ready"
+            score += 1
+            print("Hit!")
+            enemyX = random.randint(0, 800)
+            enemyY = random.randint(50, 150)
+
     pygame.display.update()
+# after the game loop, display the game over screen
+while game_over:
+
+    # game over message
+    game_over_text = game_over_font.render("GAME OVER", True, (255, 255, 255))
+    game_over_rect = game_over_text.get_rect(center=(400, 300))
+
+    # display the game over message
+    screen.blit(game_over_text, game_over_rect)
+
+    # display final score
+    final_score_text = font.render("Final Score: " + str(score), True, (255, 255, 255))
+    final_score_rect = final_score_text.get_rect(center=(400, 350))
+    screen.blit(final_score_text, final_score_rect)
+
+    # update the screen
+    pygame.display.update()
+
+    # check for quit event
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            game_over = False  # exit the game over loop
+
+# quit pygame
+pygame.quit()
 ####################################################################
 # game icon made by IYIKON [https://freeicons.io/profile/5876] from www.freeicons.io
 # fighter design is made by ColourCreatype [https://freeicons.io/profile/5790] from www.freeicons.io
