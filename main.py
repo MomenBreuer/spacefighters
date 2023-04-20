@@ -25,7 +25,7 @@ pygame.init()
 screen = pygame.display.set_mode((800, 600))
 
 # background
-background = pygame.image.load('background.jpg')
+background = pygame.image.load('background.jpeg')
 
 # title and icon of the game
 pygame.display.set_caption("Space Fighters")
@@ -158,6 +158,7 @@ while game_over:
     screen.blit(game_over_text, game_over_rect)
 
     # display final score
+
     final_score_text = font.render("Final Score: " + str(score), True, (255, 255, 255))
     final_score_rect = final_score_text.get_rect(center=(400, 350))
     screen.blit(final_score_text, final_score_rect)
