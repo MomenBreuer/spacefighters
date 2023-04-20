@@ -39,12 +39,20 @@ fighterY = 480
 fighterX_change = 0
 
 # enemy
-enemy = pygame.image.load('enemy.png')
-enemyX = random.randint(0, 736)
-enemyY = random.randint(50, 150)
-enemyX_change = 0.2
-enemyY_change = 40
+enemies = []
+num_enemies = 6
 
+for i in range(num_enemies):
+    enemy = pygame.image.load('enemy.png')
+    enemyX = random.randint(0, 736)
+    enemyY = random.randint(50, 150)
+    enemyX_change = 0.2
+    enemyY_change = 40
+    enemies.append((enemy, enemyX, enemyY, enemyX_change, enemyY_change))
+
+def draw_enemies():
+    for enemy in enemies:
+        screen.blit(enemy[0], (enemy[1], enemy[2]))
 # bullet
 bullet = pygame.image.load('bullet.png')
 bulletX = 0
@@ -87,6 +95,7 @@ while running:
     distance = math.sqrt((fighterX - enemyX)**2 + (fighterY - enemyY)**2)
     if distance < 27:
         is_collision = True
+        game_over = True
         break  # exit the game loop if there is a collision
 
 
@@ -97,9 +106,9 @@ while running:
         # keys
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                fighterX_change = -0.3
+                fighterX_change = -1.0
             if event.key == pygame.K_RIGHT:
-                fighterX_change = 0.3
+                fighterX_change = 1.0
             if event.key == pygame.K_SPACE:
                 print("space pressed")
                 fire_bullet(fighterX, bulletY)
@@ -118,10 +127,10 @@ while running:
     # enemy movement
     enemyX += enemyX_change
     if enemyX <= 0:
-        enemyX_change = 0.2
+        enemyX_change = 0.8
         enemyY += enemyY_change
     elif enemyX >= 736:
-        enemyX_change = -0.2
+        enemyX_change = -0.8
         enemyY += enemyY_change
 
     player(fighterX, fighterY)
@@ -157,12 +166,14 @@ while game_over:
     # display the game over message
     screen.blit(game_over_text, game_over_rect)
 
-    # display final score
+    # display final score and keep the game over screen open
+
 
     final_score_text = font.render("Final Score: " + str(score), True, (255, 255, 255))
     final_score_rect = final_score_text.get_rect(center=(400, 350))
     screen.blit(final_score_text, final_score_rect)
-
+    
+    
     # update the screen
     pygame.display.update()
 
@@ -170,6 +181,7 @@ while game_over:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             game_over = False  # exit the game over loop
+    
 
 # quit pygame
 pygame.quit()
