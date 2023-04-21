@@ -185,8 +185,3 @@ while game_over:
 
 # quit pygame
 pygame.quit()
-####################################################################
-# game icon made by IYIKON [https://freeicons.io/profile/5876] from www.freeicons.io
-# fighter design is made by ColourCreatype [https://freeicons.io/profile/5790] from www.freeicons.io
-# enemy design is made by www.wishforge.games [https://freeicons.io/profile/2257] from www.freeicons.io
-
